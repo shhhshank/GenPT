@@ -1,6 +1,6 @@
 import re
 from langchain.llms import Ollama
-
+import streamlit as st
 
 def extract_items(input_string):
     # Find the text inside the << >>
@@ -27,7 +27,9 @@ def slide_data_gen(topic): # Chinese Food
 
     point_count = 5
 
-    slide_data.append(extract_items(llm(f"""
+    st.write(f"Parsing context for query: {topic} [1]")
+
+    slide_data.append(extract_items(llm.invoke(f"""
     You are a text summarization and formatting specialized model that fetches relevant information
 
     For the topic "{topic}" suggest a presentation title and a presentation subtitle it should be returned in the format :
@@ -37,9 +39,12 @@ def slide_data_gen(topic): # Chinese Food
     << "Ethics in Design" | "Integrating Ethics into Design Processes" >>
     """)))
 
-    print("Generating slide data... step 1")
+    st.write("Building title and subtitle for parsed context [2]")
+    st.write(f"Suggested title: {slide_data[0][0]} | Suggested subtitle: {slide_data[0][1]} [3]")
 
-    slide_data.append(extract_items(llm(f"""
+    st.write("Building topics for the context [4]")
+
+    slide_data.append(extract_items(llm.invoke(f"""
     You are a text summarization and formatting specialized model that fetches relevant information
             
     For the presentation titled "{slide_data[0][0]}" and with subtitle "{slide_data[0][1]}" for the topic "{topic}"
@@ -51,12 +56,15 @@ def slide_data_gen(topic): # Chinese Food
     << "Introduction to Design Ethics" | "User-Centered Design" | "Transparency and Honesty" | "Data Privacy and Security" | "Accessibility and Inclusion" | "Social Impact and Sustainability" | "Ethical AI and Automation" | "Collaboration and Professional Ethics" >>          
     """)))
 
-    print("Generating slide data... step 2")
-    
+    st.write("Topics built succesfully [5]")
+
+    st.write("Initiating PPT build of 7 slides [6]")
+    i = 6
     for subtopic in slide_data[1]:
-        print("Generating slide data... " + subtopic)
+        i+=1
+        st.write(f"Generating slide content for: {subtopic} [{i}]")
         
-        data_to_clean = llm(f"""
+        data_to_clean = llm.invoke(f"""
         You are a content generation specialized model that fetches relevant information and presents it in clear concise manner
                 
         For the presentation titled "{slide_data[0][0]}" and with subtitle "{slide_data[0][1]}" for the topic "{topic}"
@@ -65,7 +73,7 @@ def slide_data_gen(topic): # Chinese Food
         Make the points short, concise and to the point.
         """)
 
-        cleaned_data = llm(f"""
+        cleaned_data = llm.invoke(f"""
         You are a text summarization and formatting specialized model that fetches relevant information and formats it into user specified formats
         Given below is a text draft for a presentation slide containing {point_count} points , extract the {point_count} sentences and format it as :
                     
@@ -80,5 +88,5 @@ def slide_data_gen(topic): # Chinese Food
         """)
 
         slide_data.append([subtopic] + extract_items(cleaned_data))
-
+    st.write("GenPT Build finished, download the result from the UI :)")
     return slide_data

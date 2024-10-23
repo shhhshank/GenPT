@@ -1,26 +1,27 @@
-# PPT Generator
-A local LLM assisted ppt generation tool 
+# GenPT - Automated PPT and Video Generation
 
-## Why  
-Writing presentations for course assignments is just boilerplate work most often, especially when even the lecturers dont even care about it.
-Thats why I automated the boilerplate work, just enter a topic and the tool generates a simple presentation , enough to satisfy the base course requirement.
+GenPT is a Python-based project that automates the creation of PowerPoint presentations (PPT) from text data, enhances the content using large language models (LLMs) via Ollama (Langchain), and converts these presentations into videos with synchronized audio narration using `gTTS` and `moviepy`.
 
-## Running Locally
-install [ollama](https://ollama.ai/download)
-and have it up and running with command `ollama serve` ( applicable to some systems only )  
+## Features
+- **PPT Generation**: Automatically generate PowerPoint presentations from structured data using Python-pptx.
+- **Natural Content Enhancement**: Use large language models via Ollama (Langchain) to enhance slide content, transforming simple bullet points into more conversational, natural text.
+- **Text-to-Speech (TTS)**: Convert slide text into audio using Google Text-to-Speech (gTTS) for narration.
+- **PPT to Video Conversion**: Transform PPTs into videos with synchronized audio, dynamic slide transitions, and optional background music or animations using `moviepy`.
+- **Retrieval-Augmented Generation (RAG)**: Users can upload PDFs to provide context for generating domain-specific content.
+- **Dynamic Content Handling**: Duplicate and adjust slides based on dynamic data, handling complex content structures automatically.
 
-download the required model
-```
-ollama pull dolphin2.1-mistral
-```
+## Future Enhancements
+- **Voice Customization**: Provide options for different voices, languages, and accents for audio narration.
+- **Interactive Video Elements**: Create clickable, interactive elements in videos for educational or training purposes.
+- **Subtitles**: Automatically generate and sync subtitles to improve accessibility.
+- **Multi-Language Support**: Generate presentations and videos in multiple languages for global audiences.
 
+## Installation
 
-clone the repo and move into the directory
-install the required python dependencies
-```
-pip install -r requirements.txt
-```
-run the streamlit app
-```
-streamlit run main.py
-```
+### Requirements
+- Python 3.x
+- `python-pptx`
+- `gTTS`
+- `moviepy`
+- `langchain`
+- `ollama`
